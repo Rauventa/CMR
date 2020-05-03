@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import {NavLink} from "react-router-dom";
-import {Button, Col, Form, ProgressBar} from "react-bootstrap";
-import axios from "axios";
-import { storage } from "../../../firebase";
+import {Button, Col, Form, Modal, ProgressBar} from "react-bootstrap";
 import {connect} from "react-redux";
-import {auth, logout} from "../../../store/actions/authAction";
 import {
     emailHandler, githubHandler, handleChange,
     loadData,
@@ -14,6 +11,10 @@ import {
 } from "../../../store/actions/profileAction";
 
 class EditProfile extends Component {
+
+    state = {
+        showModal: false
+    };
 
     componentDidMount() {
         this.props.loadData()
@@ -31,12 +32,26 @@ class EditProfile extends Component {
             this.props.vk,
             this.props.tele,
             this.props.github,
-        )
+        );
+        this.setState({showModal: true})
     };
 
     render() {
         return (
             <div className={'Edit-profile'}>
+                <Modal show={this.state.showModal} size="sm" aria-labelledby="example-modal-sizes-title-sm">
+                    <Modal.Header>
+                        <Modal.Title>Success!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Your account has been successfully changed.</Modal.Body>
+                    <Modal.Footer>
+                        <NavLink to={'/profile'}>
+                            <Button variant="secondary">
+                                Move to the profile
+                            </Button>
+                        </NavLink>
+                    </Modal.Footer>
+                </Modal>
                 <div className="Edit-profile__content container">
                     <div className="header">
                         <h3>Edit your profile</h3>
@@ -44,7 +59,10 @@ class EditProfile extends Component {
                     </div>
                     <div className="row changing">
                         <div className="col-lg-4 image-change">
-                            <img src={this.props.url || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png"} alt=""/>
+                            {this.props.url !== this.props.currentData.url ?
+                                <img src={(this.props.url === '') ? this.props.currentData.url : this.props.url} alt=""/> :
+                                <img src={"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png"} alt=""/>
+                            }
                             <Form>
                                 <Form.File
                                     custom
@@ -89,17 +107,17 @@ class EditProfile extends Component {
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="vk-link">
                                         <Form.Label>VK link</Form.Label>
-                                        <Form.Control onChange={this.props.vkHandler} />
+                                        <Form.Control onChange={this.props.vkHandler} defaultValue={this.props.currentData.vkLink}/>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="telegram-link">
                                         <Form.Label>Telegram link</Form.Label>
-                                        <Form.Control onChange={this.props.teleHandler} />
+                                        <Form.Control onChange={this.props.teleHandler} defaultValue={this.props.currentData.teleLink}/>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="github-link">
                                         <Form.Label>GitHub link</Form.Label>
-                                        <Form.Control onChange={this.props.githubHandler} />
+                                        <Form.Control onChange={this.props.githubHandler} defaultValue={this.props.currentData.githubLink}/>
                                     </Form.Group>
                                 </Form.Row>
                             </Form>

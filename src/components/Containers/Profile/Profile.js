@@ -27,6 +27,7 @@ class Profile extends Component {
     }
 
     render() {
+        console.log(this.state.currentData)
         return (
             <div className={'Profile'}>
                 <div className="Profile__content container">
@@ -37,18 +38,28 @@ class Profile extends Component {
                     <div className="row profile-about">
                         <div className="col-lg-3 profile-main">
                             <div className="profile-info">
-                                <img src={this.state.currentData.url || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png"} alt=""/>
+                                <div className="person-img">
+                                    <img src={this.state.currentData.url || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png"} alt=""/>
+                                    <NavLink to={'/edit-profile'} className={'edit'}>
+                                        <i className="fa fa-pencil"></i>
+                                    </NavLink>
+                                </div>
                                 <div className="profile-name">
                                     <h4>{`${this.state.currentData.firstName} ${this.state.currentData.lastName}`}</h4>
                                     <h6>{this.state.currentData.nickname}</h6>
                                     <small>Web Developer</small>
                                 </div>
                                 <div className="socials">
-                                    <div className="social">F</div>
-                                    <div className="social">G</div>
-                                    <div className="social">T</div>
+                                    <a href={this.state.currentData.vkLink || '#'} className="social">
+                                        <i className='fa fa-vk'></i>
+                                    </a>
+                                    <a href={this.state.currentData.teleLink || '#'} className="social">
+                                        <i className='fa fa-telegram'></i>
+                                    </a>
+                                    <a href={this.state.currentData.githubLink || '#'} className="social">
+                                        <i className='fa fa-github'></i>
+                                    </a>
                                 </div>
-                                <NavLink to={'/edit-profile'} className={'edit'}>Edit your profile</NavLink>
                             </div>
                         </div>
                         <div className="col-lg-5 profile-stats">

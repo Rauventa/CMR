@@ -24,7 +24,7 @@ export function loadData() {
 }
 
 export function handleChange(event) {
-    return dispatch => {
+    return (dispatch) => {
         const image = event.target.files[0];
         if (image) {
 
@@ -54,6 +54,9 @@ export function handleChange(event) {
                 }
             );
         }
+        // dispatch(clearChanger(currentImage, currentProgress))
+        // Мы должны будем сбросить информацию без перезагрузки
+        // Добавить текущую установленную фотку, слить прогресс бар
     }
 }
 
